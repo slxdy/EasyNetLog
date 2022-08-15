@@ -3,7 +3,7 @@ EasyNetLog is a simple logging solution for any .NET project.
 
 ## Usage
 To create a new logger instance, use the main constructor of `EasyNetLogger`.<br>
-The constructor has 4 parameters:
+The constructor has 4 parameters:</br>
 - `logFormat` Allows you to set a post-processor for logs.
 - `includeConsoleStream` Will force the logger to write logs to a console.
 - `files` An array of file paths that the logger will write to.
@@ -11,14 +11,14 @@ The constructor has 4 parameters:
 
 ## Formatting
 EasyNetLog has a simple XML formatting system that allows you to add some colors to your logs.<br>
-The color formatter supports known color names and HEX color codes.<br>
-Example:
+The color formatter supports known color names and HEX color codes.</br><br>
+Example:</br>
 ```cs
 "<color=red>I'm red!</color>"
 ```
 Sometimes you have to log user input, but don't want it to be formatted.<br>
-You can ignore text formats using `<ignore>`.<br>
-Example:
+You can ignore text formats using `<ignore>`.</br><br>
+Example:</br>
 ```cs
 "<ignore><color=red>I'm not red!</color></ignore>"
 ```
