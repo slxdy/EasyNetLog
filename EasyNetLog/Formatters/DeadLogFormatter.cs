@@ -9,7 +9,7 @@ namespace EasyNetLog.Formatters
             "color"
         };
 
-        protected override string CloseSetting(string setting)
+        protected override string? CloseSetting(string setting)
         {
             if (blacklistedSettings.Contains(setting))
                 return string.Empty;
@@ -17,7 +17,7 @@ namespace EasyNetLog.Formatters
             return null;
         }
 
-        protected override string OpenSetting(string setting, string argument)
+        protected override string? OpenSetting(string setting, string? argument)
         {
             if (blacklistedSettings.Contains(setting))
                 return string.Empty;
