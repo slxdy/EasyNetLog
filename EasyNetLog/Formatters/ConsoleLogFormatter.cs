@@ -29,7 +29,7 @@ namespace EasyNetLog.Formatters
         };
 
         private static readonly bool colorProcessingEnabled;
-        private TextColor currentColor;
+        private TextColor? currentColor;
 
         static ConsoleLogFormatter()
         {
@@ -56,7 +56,7 @@ namespace EasyNetLog.Formatters
             return Color.FromArgb(consoleColors[(int)color]);
         }
 
-        protected override string CloseSetting(string setting)
+        protected override string? CloseSetting(string setting)
         {
             switch (setting)
             {
@@ -67,7 +67,7 @@ namespace EasyNetLog.Formatters
             return null;
         }
 
-        protected override string OpenSetting(string setting, string argument)
+        protected override string? OpenSetting(string setting, string? argument)
         {
             switch (setting)
             {
@@ -83,24 +83,33 @@ namespace EasyNetLog.Formatters
             if (!colorProcessingEnabled)
                 return string.Empty;
 
-            currentColor = currentColor.parent;
+            if (currentColor != null)
+                currentColor = currentColor.parent;
+
             var prevColor = currentColor == null ? GetConsoleColor(Console.ForegroundColor) : currentColor.color;
             return GetOpenColorFormat(prevColor);
         }
 
-        private string OpenColor(string argument)
+        private string OpenColor(string? argument)
         {
             if (!colorProcessingEnabled)
                 return string.Empty;
 
             Color color;
-            try
+            if (argument == null)
             {
-                color = ColorTranslator.FromHtml(argument);
+                color = GetConsoleColor(Console.ForegroundColor);
             }
-            catch
+            else
             {
-                color = Color.FromName(argument);
+                try
+                {
+                    color = ColorTranslator.FromHtml(argument);
+                }
+                catch
+                {
+                    color = Color.FromName(argument);
+                }
             }
 
             currentColor = new TextColor
@@ -118,7 +127,7 @@ namespace EasyNetLog.Formatters
 
         private class TextColor
         {
-            public TextColor parent;
+            public TextColor? parent;
             public Color color;
         }
     }

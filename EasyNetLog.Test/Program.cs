@@ -5,7 +5,7 @@ namespace EasyNetLog.Test
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        private static void Main()
         {
             var logger = new EasyNetLogger((x) => $"[<color=magenta>{DateTime.Now:HH:mm:ss.fff}</color>] <color=gray>{x}</color>", true, new string[]
             {

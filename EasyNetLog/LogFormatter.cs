@@ -31,7 +31,7 @@ namespace EasyNetLog
                         openRead = false;
                         var isClosing = log[lastCmdCharIdx + 1] == '/';
                         var setting = log.Substring(lastCmdCharIdx + (isClosing ? 2 : 1), idx - lastCmdCharIdx - (isClosing ? 2 : 1));
-                        string argument = null;
+                        string? argument = null;
                         var splitIdx = setting.IndexOf('=');
                         if (splitIdx != -1)
                         {
@@ -119,8 +119,8 @@ namespace EasyNetLog
             return sb.ToString();
         }
 
-        protected abstract string OpenSetting(string setting, string argument);
-        protected abstract string CloseSetting(string setting);
+        protected abstract string? OpenSetting(string setting, string? argument);
+        protected abstract string? CloseSetting(string setting);
 
         private class Replacement
         {
