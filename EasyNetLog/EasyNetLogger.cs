@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace EasyNetLog
 {
@@ -18,7 +19,19 @@ namespace EasyNetLog
             this.logFormat = logFormat;
 
             if (includeConsoleStream)
-                _logStreams.Add(new LogStream(Console.Out, new ConsoleLogFormatter()));
+            {
+                var hasConsole = GetConsoleWindow() != IntPtr.Zero;
+                if (!hasConsole)
+                {
+                    hasConsole = AllocConsole();
+                    if (hasConsole)
+                        Console.SetOut(new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true });
+                }
+                if (hasConsole)
+                {
+                    _logStreams.Add(new LogStream(Console.Out, new ConsoleLogFormatter()));
+                }
+            }
 
             if (files != null)
             {
@@ -47,6 +60,13 @@ namespace EasyNetLog
                 _logStreams.AddRange(customLogStreams);
             }
         }
+
+        [DllImport("kernel32")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool AllocConsole();
+
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr GetConsoleWindow();
 
         public void Log(string log)
         {

@@ -14,7 +14,7 @@ namespace EasyNetLog.Test
 
             for (; ; )
             {
-                logger.Log("A cool <color=#e63d6d>Juicy</color> <color=#94ff2a>Looking</color> log :)");
+                logger.Log("A cool <color=#e63d6d>fuity</color> <color=#94ff2a>log</color> :)");
                 Thread.Sleep(1000);
             }
         }
