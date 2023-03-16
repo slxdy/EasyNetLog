@@ -1,4 +1,3 @@
-﻿namespace EasyNetLog
-{
-    public delegate string LogFormat(string log);
-}
+﻿namespace EasyNetLog;
+
+public delegate string LogFormat(string log);

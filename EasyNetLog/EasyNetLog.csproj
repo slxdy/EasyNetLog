@@ -1,32 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Authors>SlidyDev</Authors>
+    <Authors>MikeTheNerd</Authors>
     <Company>N/A</Company>
     <Configurations>Debug;Release</Configurations>
     <DebugType>embedded</DebugType>
     <Description>
-      EasyNetLog is a simple logging solution for any .NET project.
+      EasyNetLog is a simple logging solution for all .NET projects
     </Description>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
-    <PackageId>SlidyDev.EasyNetLog</PackageId>
+    <PackageId>EasyNetLog</PackageId>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/SlidyDev/EasyNetLog</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/MikeTheRealNerd/EasyNetLog</PackageProjectUrl>
     <PackageTags>logging</PackageTags>
     <Platforms>AnyCPU</Platforms>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/SlidyDev/EasyNetLog.git</RepositoryUrl>
-    <TargetFrameworks>netframework3.5</TargetFrameworks>
+    <RepositoryUrl>https://github.com/MikeTheRealNerd/EasyNetLog.git</RepositoryUrl>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <Title>EasyNetLog</Title>
-    <Version>1.0.0</Version>
+    <Version>2.0.0</Version>
 
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
   </ItemGroup>
 </Project>

@@ -1,28 +1,27 @@
 ﻿using System.Linq;
 
-namespace EasyNetLog.Formatters
+namespace EasyNetLog.Formatters;
+
+public class DeadLogFormatter : LogFormatter
 {
-    public class DeadLogFormatter : LogFormatter
+    private static readonly string[] blacklistedSettings = new string[]
     {
-        private static readonly string[] blacklistedSettings = new string[]
-        {
-            "color"
-        };
+        "color"
+    };
 
-        protected override string? CloseSetting(string setting)
-        {
-            if (blacklistedSettings.Contains(setting))
-                return string.Empty;
+    protected override string? CloseSetting(string setting)
+    {
+        if (blacklistedSettings.Contains(setting))
+            return string.Empty;
 
-            return null;
-        }
+        return null;
+    }
 
-        protected override string? OpenSetting(string setting, string? argument)
-        {
-            if (blacklistedSettings.Contains(setting))
-                return string.Empty;
+    protected override string? OpenSetting(string setting, string? argument)
+    {
+        if (blacklistedSettings.Contains(setting))
+            return string.Empty;
 
-            return null;
-        }
+        return null;
     }
 }

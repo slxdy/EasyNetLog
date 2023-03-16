@@ -1,16 +1,15 @@
 ﻿using System.IO;
 
-namespace EasyNetLog
-{
-    public class LogStream
-    {
-        public readonly TextWriter stream;
-        public readonly LogFormatter formatter;
+namespace EasyNetLog;
 
-        public LogStream(TextWriter stream, LogFormatter formatter)
-        {
-            this.stream = stream;
-            this.formatter = formatter;
-        }
+public class LogStream
+{
+    public TextWriter Stream { get; private set; }
+    public LogFormatter Formatter { get; private set; }
+
+    public LogStream(TextWriter stream, LogFormatter formatter)
+    {
+        Stream = stream;
+        Formatter = formatter;
     }
 }

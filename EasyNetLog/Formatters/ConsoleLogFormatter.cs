@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EasyNetLog.Utilities;
+using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 
@@ -102,14 +103,7 @@ namespace EasyNetLog.Formatters
             }
             else
             {
-                try
-                {
-                    color = ColorTranslator.FromHtml(argument);
-                }
-                catch
-                {
-                    color = Color.FromName(argument);
-                }
+                color = ColorTranslator.FromHtml(argument);
             }
 
             currentColor = new TextColor

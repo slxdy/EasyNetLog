@@ -5,88 +5,87 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace EasyNetLog
+namespace EasyNetLog;
+
+public class EasyNetLogger
 {
-    public class EasyNetLogger
+    private readonly LogFormat logFormat;
+    private readonly List<LogStream> _logStreams = new();
+
+    [DllImport("kernel32")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool AllocConsole();
+
+    [DllImport("kernel32.dll")]
+    private static extern IntPtr GetConsoleWindow();
+
+    public ReadOnlyCollection<LogStream> LogStreams => _logStreams.AsReadOnly();
+
+    public EasyNetLogger(LogFormat logFormat, bool includeConsoleStream, IEnumerable<string>? files = null, IEnumerable<LogStream>? streams = null)
     {
-        private readonly LogFormat logFormat;
-        private readonly List<LogStream> _logStreams = new List<LogStream>();
+        this.logFormat = logFormat;
 
-        public ReadOnlyCollection<LogStream> LogStreams => _logStreams.AsReadOnly();
-
-        public EasyNetLogger(LogFormat logFormat, bool includeConsoleStream, IEnumerable<string> files, IEnumerable<LogStream> customLogStreams)
+        if (includeConsoleStream)
         {
-            this.logFormat = logFormat;
-
-            if (includeConsoleStream)
+            var hasConsole = GetConsoleWindow() != IntPtr.Zero;
+            if (!hasConsole)
             {
-                var hasConsole = GetConsoleWindow() != IntPtr.Zero;
-                if (!hasConsole)
-                {
-                    hasConsole = AllocConsole();
-                    if (hasConsole)
-                        Console.SetOut(new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true });
-                }
+                hasConsole = AllocConsole();
                 if (hasConsole)
-                {
-                    _logStreams.Add(new LogStream(Console.Out, new ConsoleLogFormatter()));
-                }
+                    Console.SetOut(new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true });
             }
-
-            if (files != null)
+            if (hasConsole)
             {
-                foreach (var file in files)
-                {
-                    try
-                    {
-                        var dir = Path.GetDirectoryName(file);
-                        if (dir == null)
-                            continue;
-
-                        Directory.CreateDirectory(dir);
-
-                        var str = File.CreateText(file);
-                        _logStreams.Add(new LogStream(str, new DeadLogFormatter()));
-                    }
-                    catch
-                    {
-
-                    }
-                }
-            }
-
-            if (customLogStreams != null)
-            {
-                _logStreams.AddRange(customLogStreams);
+                _logStreams.Add(new LogStream(Console.Out, new ConsoleLogFormatter()));
             }
         }
 
-        [DllImport("kernel32")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool AllocConsole();
-
-        [DllImport("kernel32.dll")]
-        private static extern IntPtr GetConsoleWindow();
-
-        public void Log(string log)
+        if (files != null)
         {
-            var finalLog = logFormat == null ? log : logFormat.Invoke(log);
-
-            foreach (var logStream in _logStreams)
+            foreach (var file in files)
             {
-                var finalFinalLog = logStream.formatter.Format(finalLog);
-                logStream.stream.WriteLine(finalFinalLog);
-                logStream.stream.Flush();
+                try
+                {
+                    var dir = Path.GetDirectoryName(file);
+                    if (dir == null)
+                        continue;
+
+                    Directory.CreateDirectory(dir);
+
+                    var str = File.CreateText(file);
+                    _logStreams.Add(new LogStream(str, new DeadLogFormatter()));
+                }
+                catch
+                {
+
+                }
             }
         }
 
-        public void NewLine()
+        if (streams != null)
         {
-            foreach (var logStream in _logStreams)
-            {
-                logStream.stream.WriteLine();
-                logStream.stream.Flush();
-            }
+            _logStreams.AddRange(streams);
+        }
+    }
+
+    public void Log(string log)
+    {
+        var finalLog = logFormat == null ? log : logFormat.Invoke(log);
+
+        foreach (var logStream in _logStreams)
+        {
+            var finalFinalLog = logStream.Formatter.Format(finalLog);
+            logStream.Stream.WriteLine(finalFinalLog);
+            logStream.Stream.Flush();
+        }
+    }
+
+    public void NewLine()
+    {
+        foreach (var logStream in _logStreams)
+        {
+            logStream.Stream.WriteLine();
+            logStream.Stream.Flush();
         }
     }
 }
