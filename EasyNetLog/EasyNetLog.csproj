@@ -14,12 +14,12 @@
     <PackageId>EasyNetLog</PackageId>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/MikeTheRealNerd/EasyNetLog</PackageProjectUrl>
-    <PackageTags>logging</PackageTags>
+    <PackageTags>easy;log;logging;EasyLog;Easy Net Log;logger;simple;easy.logger</PackageTags>
     <Platforms>AnyCPU</Platforms>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/MikeTheRealNerd/EasyNetLog.git</RepositoryUrl>
-	<PackageReadmeFile>../README.md</PackageReadmeFile>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <Title>EasyNetLog</Title>
     <Version>2.0.0</Version>
@@ -29,5 +29,9 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<None Include="../README.md" Pack="true" PackagePath="/"/>
   </ItemGroup>
 </Project>
