@@ -3,8 +3,14 @@ using System.Text;
 
 namespace EasyNetLog;
 
+/// <summary>
+/// The base class for all types of log formatters.
+/// </summary>
 public abstract class LogFormatter
 {
+    /// <summary>
+    /// Formats a log through the child class.
+    /// </summary>
     public string Format(string log)
     {
         var openRead = false;
@@ -119,7 +125,19 @@ public abstract class LogFormatter
         return sb.ToString();
     }
 
+    /// <summary>
+    /// Replaces the start of a log setting.
+    /// </summary>
+    /// <param name="setting">The name of the setting.</param>
+    /// <param name="argument">The value of the setting</param>
+    /// <returns>A string that should be inserted where the setting was defined.</returns>
     protected abstract string? OpenSetting(string setting, string? argument);
+
+    /// <summary>
+    /// Replaces the ending of a log setting.
+    /// </summary>
+    /// <param name="setting">The name of the setting.</param>
+    /// <returns>A string that should be inserted where the ending of the setting was defined.</returns>
     protected abstract string? CloseSetting(string setting);
 
     private class Replacement

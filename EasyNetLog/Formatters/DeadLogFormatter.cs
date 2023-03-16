@@ -2,6 +2,9 @@
 
 namespace EasyNetLog.Formatters;
 
+/// <summary>
+/// Formatter for removing color codes, primarily used for log files.
+/// </summary>
 public class DeadLogFormatter : LogFormatter
 {
     private static readonly string[] blacklistedSettings = new string[]

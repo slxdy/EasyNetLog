@@ -7,6 +7,9 @@ using System.Runtime.InteropServices;
 
 namespace EasyNetLog;
 
+/// <summary>
+/// The main logger class.
+/// </summary>
 public class EasyNetLogger
 {
     private readonly LogFormat logFormat;
@@ -19,8 +22,15 @@ public class EasyNetLogger
     [DllImport("kernel32.dll")]
     private static extern IntPtr GetConsoleWindow();
 
+    /// <summary>
+    /// A collection of all the streams this logger flushes to.
+    /// </summary>
     public ReadOnlyCollection<LogStream> LogStreams => _logStreams.AsReadOnly();
 
+    /// <param name="logFormat">A log preprocessor. Example lambda: <i>(msg) => $"[&lt;color=red&gt;Cool Log&lt;/color&gt;] {msg}"</i></param>
+    /// <param name="includeConsoleStream">Logs to console if true. A console is allocated if no other console is attached.</param>
+    /// <param name="files">A collection of file paths that the logger will log to.</param>
+    /// <param name="streams">A collection of streams that the logger will log to.</param>
     public EasyNetLogger(LogFormat logFormat, bool includeConsoleStream, IEnumerable<string>? files = null, IEnumerable<LogStream>? streams = null)
     {
         this.logFormat = logFormat;
@@ -68,6 +78,9 @@ public class EasyNetLogger
         }
     }
 
+    /// <summary>
+    /// Logs a message to all <see cref="LogStreams"/>. See <see href="https://github.com/MikeTheRealNerd/EasyNetLog#formatting">README</see> for more info on how formatting works.
+    /// </summary>
     public void Log(string log)
     {
         var finalLog = logFormat == null ? log : logFormat.Invoke(log);
@@ -80,6 +93,9 @@ public class EasyNetLogger
         }
     }
 
+    /// <summary>
+    /// Logs a new line to all <see cref="LogStreams"/>.
+    /// </summary>
     public void NewLine()
     {
         foreach (var logStream in _logStreams)
